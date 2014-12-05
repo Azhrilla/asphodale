@@ -31,10 +31,10 @@ class Grid
   void Initialize(int, int);
   void ResolveDeplacements();
   void ResolveAttacks();
-  const void PrintGrid();
-  const bool IsCellFull(Coordinates, int&);
-  const bool DeplacementImpossible(Coordinates);
-  const vector<int> GetNeighborsIndex(Coordinates);
+  void PrintGrid() const;
+  bool IsCellFull(Coordinates, int&) const;
+  bool DeplacementImpossible(Coordinates) const;
+  vector<int> GetNeighborsIndex(Coordinates) const;
 };
 
 

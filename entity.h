@@ -8,6 +8,9 @@
 #include "coordinates.h"
 #include "cell.h"
 
+
+// Tout est entité sur la grille, spécialisations possibles : héros, monstres,
+// murs ... etc
 class Entity
 {
  protected:
@@ -18,19 +21,19 @@ class Entity
   Coordinates m_coord;
   Coordinates m_coordWanted;
   Cell* m_currentCell;
-  bool m_isAlive;
   string m_name;
+
  public:
   Entity();
   void SetCoord(Coordinates, Cell*);
-  const void PrintCoord();
-  const Coordinates GetCoord();
-  const string GetName();
+  void PrintCoord() const;
+  Coordinates GetCoord() const;
+  string GetName() const;
 
-  virtual const Coordinates GetTargetDeplacement();
-  virtual const int Attack(Entity*);
+  virtual Coordinates GetTargetDeplacement();
+  virtual  int Attack(Entity*) const;
   virtual void TakeDamage(Entity*);
-  virtual const bool IsAlive();
+  virtual  bool IsAlive() const;
 };
 
 

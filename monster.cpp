@@ -9,7 +9,7 @@ Monster::Monster()
   m_name = "monster";
 }
 
-const Coordinates Monster::GetTargetDeplacement()
+Coordinates Monster::GetTargetDeplacement()
 {
   int dep_X = m_dist(m_rng) - 1;
   int dep_Y = m_dist(m_rng) - 1;
@@ -25,13 +25,13 @@ void Monster::TakeDamage(Entity* foe)
   cout << m_name << " took " << foe->Attack(this)<< " damages from " << foe->GetName()<< endl;
 }
 
-const int Monster::Attack(Entity* target)
+int Monster::Attack(Entity* target) const
 {
   return m_attackDamage;
 }
 
 
-const bool Monster::IsAlive()
+bool Monster::IsAlive() const
 {
   return (m_HP > 0);
 }

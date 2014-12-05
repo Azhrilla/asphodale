@@ -8,7 +8,7 @@ Hero::Hero()
   m_name = "hero";
 }
 
-const Coordinates Hero::GetTargetDeplacement()
+Coordinates Hero::GetTargetDeplacement()
 {
   Coordinates output = m_coord;
   cout << "hero dep : ?"<<endl;
@@ -74,13 +74,13 @@ void Hero::TakeDamage(Entity* foe)
       m_HP -= foe->Attack(this);
       cout << m_name <<" took " << foe->Attack(this) << " damages from " << foe->GetName()<< endl;
 }
- 
- const int Hero::Attack(Entity* target)
+
+ int Hero::Attack(Entity* target) const
  {
       return 0;
     }
- 
- const bool Hero::IsAlive()
+
+  bool Hero::IsAlive() const
  {
       return (m_HP > 0);
     }

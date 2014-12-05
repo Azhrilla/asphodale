@@ -84,7 +84,7 @@ void Grid::ResolveDeplacements()
 }
 
 // Fonction batarde de visualisation ascii.
-const void Grid::PrintGrid()
+void Grid::PrintGrid() const
 {
   for (unsigned int i = 0; i < m_dimX; i++)
     {
@@ -109,7 +109,7 @@ const void Grid::PrintGrid()
 
 // Check si une coordonnée est occupée et retourne l'index de l'occupant si
 // oui.
-const bool Grid::IsCellFull(Coordinates coord, int& indexEntity)
+bool Grid::IsCellFull(Coordinates coord, int& indexEntity) const
 {
   bool presence = false;
   for (unsigned int i = 0; i < m_entities.size(); i++)
@@ -125,13 +125,13 @@ const bool Grid::IsCellFull(Coordinates coord, int& indexEntity)
 
 
 // Check si un déplacement est possible.
-const bool Grid::DeplacementImpossible(Coordinates coord)
+bool Grid::DeplacementImpossible(Coordinates coord) const
 {
   return (coord.m_posX < 0 || coord.m_posY < 0 ||
           coord.m_posY >= m_dimY || coord.m_posX >= m_dimX);
 }
 
-const vector<int> Grid::GetNeighborsIndex(Coordinates coord)
+vector<int> Grid::GetNeighborsIndex(Coordinates coord) const
 {
   vector<int> output;
   int index;

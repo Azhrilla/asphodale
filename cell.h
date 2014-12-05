@@ -11,7 +11,7 @@ class Cell
  public:
   Cell();
   void SetCoord(unsigned int, unsigned int);
-  const void PrintCoord();
+  void PrintCoord() const;
 };
 
 

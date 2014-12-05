@@ -13,12 +13,12 @@ Coordinates::Coordinates(int x, int y)
   m_posY = y;
 }
 
-const bool operator==(Coordinates const& lhs, Coordinates const& rhs)
+bool operator==(Coordinates const& lhs, Coordinates const& rhs)
 {
   return (lhs.m_posX == rhs.m_posX && lhs.m_posY == rhs.m_posY);
 }
 
-const vector<int> ExtractDuplicatesIndex(const vector<Coordinates> input)
+vector<int> ExtractDuplicatesIndex(const vector<Coordinates> input)
 {
   vector<int> output;
   for(unsigned int i = 0; i < input.size(); i++)

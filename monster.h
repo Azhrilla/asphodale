@@ -12,10 +12,10 @@ class Monster : public Entity
 
  public:
   Monster();
-  const Coordinates GetTargetDeplacement();
+  Coordinates GetTargetDeplacement();
   virtual void TakeDamage(Entity*);
-  virtual const int Attack(Entity*);
-  const bool IsAlive();
+  virtual  int Attack(Entity*) const;
+  bool IsAlive() const;
 };
 
 #endif

@@ -18,7 +18,7 @@ class Coordinates
 };
 
 
-const bool operator==(Coordinates const&, Coordinates const&);
-const vector<int> ExtractDuplicatesIndex(const vector<Coordinates>);
+bool operator==(Coordinates const&, Coordinates const&);
+vector<int> ExtractDuplicatesIndex(const vector<Coordinates>);
 
 #endif

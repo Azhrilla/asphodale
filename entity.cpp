@@ -7,7 +7,6 @@ Entity::Entity()
 {
   m_coord.m_posX = 0;
   m_coord.m_posY = 0;
-  m_isAlive = true;
   unsigned seed
     = std::chrono::system_clock::now().time_since_epoch().count();
   m_rng.seed(seed);
@@ -21,17 +20,17 @@ void Entity::SetCoord(Coordinates coord, Cell* newCell)
   m_currentCell = newCell;
 }
 
-const Coordinates Entity::GetCoord()
+Coordinates Entity::GetCoord() const
 {
   return m_coord;
 }
 
-const void Entity::PrintCoord()
+void Entity::PrintCoord() const
 {
   std::cout << "This entity is at " << m_coord.m_posX << " " << m_coord.m_posY << std::endl;
 }
 
-const Coordinates Entity::GetTargetDeplacement()
+Coordinates Entity::GetTargetDeplacement()
 {
   int dep_X = m_dist(m_rng) - 1;
   int dep_Y = m_dist(m_rng) - 1;
@@ -41,7 +40,7 @@ const Coordinates Entity::GetTargetDeplacement()
   return output;
 }
 
-const int Entity::Attack(Entity* target)
+int Entity::Attack(Entity* target) const
 {
   return 0;
 }
@@ -51,12 +50,12 @@ void Entity::TakeDamage(Entity*)
   cout << "Entity can't take dmg" << endl;
 }
 
-const bool Entity::IsAlive()
+bool Entity::IsAlive() const 
 {
   return true;
 }
 
-const string Entity::GetName()
+string Entity::GetName() const 
 {
   return m_name;
 }
