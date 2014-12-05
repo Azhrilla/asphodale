@@ -1,3 +1,7 @@
+#ifndef CELL_H
+#define CELL_H
+
+
 #include "coordinates.h"
 
 class Cell
@@ -9,3 +13,6 @@ class Cell
   void SetCoord(unsigned int, unsigned int);
   const void PrintCoord();
 };
+
+
+#endif

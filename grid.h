@@ -1,5 +1,5 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef GRID_H
+#define GRID_H
 
 
 

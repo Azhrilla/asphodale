@@ -20,6 +20,6 @@ void Grid::Initialize(int X, int Y)
     }
 
   Entity player1;
-  Player1.SetCoord(0,2,Cell[0,2]);
-  Player.PrintCoord();
+  player1.SetCoord(0,2,m_cells[0,2]);
+  player1.PrintCoord();
 }
