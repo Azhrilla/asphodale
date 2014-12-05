@@ -1,13 +1,12 @@
 #include "grid.h"
-#include "entity.h"
-#include "coordinates.h"
-#include <iostream>
 
 using namespace std;
 
 Grid::Grid()
 {
-
+  unsigned seed
+    = std::chrono::system_clock::now().time_since_epoch().count();
+  m_rng.seed(seed);
 }
 
 void Grid::Initialize(int X, int Y)
@@ -21,15 +20,18 @@ void Grid::Initialize(int X, int Y)
       m_cells[i] = new Cell[m_dimY];
     }
 
-  Entity player1;
-  player1.SetCoord(0,2,m_cells[0,2]);
-  player1.PrintCoord();
-  Entity player2;
-  player2.SetCoord(4,2,m_cells[4,2]);
-  player2.PrintCoord();
-  Entity player3;
-  player3.SetCoord(2,0,m_cells[2,0]);
-  player3.PrintCoord();
+  Coordinates coord1(0,2);
+  Hero* player1 = new Hero;
+  player1->SetCoord(coord1,m_cells[0,2]);
+  player1->PrintCoord();
+  Monster* player2 = new Monster;
+  Coordinates coord2(4,2);
+  player2->SetCoord(coord2,m_cells[4,2]);
+  player2->PrintCoord();
+  Monster* player3 = new Monster;
+  Coordinates coord3(2,0);
+  player3->SetCoord(coord3,m_cells[2,0]);
+  player3->PrintCoord();
 
 
   m_entities.push_back(player1);
@@ -44,11 +46,10 @@ void Grid::ResolveDeplacements()
   vector<Coordinates> targetDeplacements;
   for ( unsigned int i = 0; i < m_entities.size(); i++)
     {
-      Coordinates nextDeplacement = m_entities[i].GetTargetDeplacement() ;
-      while (nextDeplacement.m_posX < 0 || nextDeplacement.m_posY < 0
-             || nextDeplacement.m_posY >= m_dimY || nextDeplacement.m_posX >= m_dimX)
+      Coordinates nextDeplacement = m_entities[i]->GetTargetDeplacement() ;
+      while (DeplacementImpossible(nextDeplacement))
         {
-          nextDeplacement = m_entities[i].GetTargetDeplacement() ;
+          nextDeplacement = m_entities[i]->GetTargetDeplacement() ;
         }
       targetDeplacements.push_back(nextDeplacement);
     }
@@ -67,7 +68,7 @@ void Grid::ResolveDeplacements()
         {
           for (unsigned int i = 0; i < index.size(); i++)
             {
-              targetDeplacements[index[i]] = m_entities[index[i]].GetCoord();
+              targetDeplacements[index[i]] = m_entities[index[i]]->GetCoord();
             }
         }
     }
@@ -78,9 +79,8 @@ void Grid::ResolveDeplacements()
     {
       int x = targetDeplacements[i].m_posX;
       int y = targetDeplacements[i].m_posY;
-      m_entities[i].SetCoord(x,y,m_cells[x,y]);
+      m_entities[i]->SetCoord(targetDeplacements[i],m_cells[x,y]);
     }
-
 }
 
 // Fonction batarde de visualisation ascii.
@@ -91,19 +91,118 @@ const void Grid::PrintGrid()
       for (unsigned int j = 0; j < m_dimY; j++)
         {
           Coordinates coordCell(j,i);
-          bool presence = false;
-          for (unsigned int k = 0; k < m_entities.size(); k++)
+          int k;
+          if (IsCellFull(coordCell,k))
             {
-                if (m_entities[k].GetCoord() == coordCell)
-                  {
-                    cout << " " << k+1 << " " ;
-                    presence = true;
-                  }
+              cout << " " << k+1 << " " ;
             }
-          if (!presence)
-            cout << " o ";
+          else
+            {
+              cout << " o ";
+            }
         }
       cout << endl;
     }
   cout << endl;
+}
+
+
+// Check si une coordonnée est occupée et retourne l'index de l'occupant si
+// oui.
+const bool Grid::IsCellFull(Coordinates coord, int& indexEntity)
+{
+  bool presence = false;
+  for (unsigned int i = 0; i < m_entities.size(); i++)
+    {
+      if (m_entities[i]->GetCoord() == coord)
+        {
+          presence = true;
+          indexEntity = i;
+        }
+    }
+  return presence;
+}
+
+
+// Check si un déplacement est possible.
+const bool Grid::DeplacementImpossible(Coordinates coord)
+{
+  return (coord.m_posX < 0 || coord.m_posY < 0 ||
+          coord.m_posY >= m_dimY || coord.m_posX >= m_dimX);
+}
+
+const vector<int> Grid::GetNeighborsIndex(Coordinates coord)
+{
+  vector<int> output;
+  int index;
+
+  coord.m_posX++;
+  if (IsCellFull(coord,index))
+    {
+      output.push_back(index);
+    }
+  coord.m_posY++;
+  if (IsCellFull(coord,index))
+    {
+      output.push_back(index);
+    }
+  coord.m_posX--;
+  if (IsCellFull(coord,index))
+    {
+      output.push_back(index);
+    }
+  coord.m_posX--;
+  if (IsCellFull(coord,index))
+    {
+      output.push_back(index);
+    }
+  coord.m_posY--;
+  if (IsCellFull(coord,index))
+    {
+      output.push_back(index);
+    }
+  coord.m_posY--;
+  if (IsCellFull(coord,index))
+    {
+      output.push_back(index);
+    }
+  coord.m_posX++;
+  if (IsCellFull(coord,index))
+    {
+      output.push_back(index);
+    }
+  coord.m_posX++;
+  if (IsCellFull(coord,index))
+    {
+      output.push_back(index);
+    }
+  return output;
+}
+
+
+void Grid::ResolveAttacks()
+{
+  for (unsigned int i = 0; i < m_entities.size(); i++)
+    {
+      vector<int> targets = GetNeighborsIndex(m_entities[i]->GetCoord());
+      std::uniform_int_distribution<uint32_t> dist(0, targets.size()-1);
+      int chosenOne = dist(m_rng);
+      if (targets.size() > 0)
+        {
+          m_entities[targets[chosenOne]]->TakeDamage(m_entities[i]);
+        }
+    }
+  vector<Entity*> bufferAlive;
+   for (unsigned int i = 0; i < m_entities.size(); i++)
+    {
+      if (!m_entities[i]->IsAlive())
+        {
+          delete m_entities[i];
+        }
+      else
+        {
+          bufferAlive.push_back(m_entities[i]);
+        }
+    }
+   m_entities = bufferAlive;
 }

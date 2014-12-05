@@ -2,21 +2,22 @@
 
 
 using namespace std;
+// Créé l'entité et initialise son propre générateur aléatoire.
 Entity::Entity()
 {
   m_coord.m_posX = 0;
   m_coord.m_posY = 0;
+  m_isAlive = true;
   unsigned seed
-            = std::chrono::system_clock::now().time_since_epoch().count();
+    = std::chrono::system_clock::now().time_since_epoch().count();
   m_rng.seed(seed);
   std::uniform_int_distribution<uint32_t> distribution(0,2);
   m_dist = distribution;
 }
 
-void Entity::SetCoord(unsigned int x, unsigned int y, Cell* newCell)
+void Entity::SetCoord(Coordinates coord, Cell* newCell)
 {
-  m_coord.m_posX = x;
-  m_coord.m_posY = y;
+  m_coord = coord;
   m_currentCell = newCell;
 }
 
@@ -38,4 +39,24 @@ const Coordinates Entity::GetTargetDeplacement()
   output.m_posX += dep_X;
   output.m_posY += dep_Y;
   return output;
+}
+
+const int Entity::Attack(Entity* target)
+{
+  return 0;
+}
+
+void Entity::TakeDamage(Entity*)
+{
+  cout << "Entity can't take dmg" << endl;
+}
+
+const bool Entity::IsAlive()
+{
+  return true;
+}
+
+const string Entity::GetName()
+{
+  return m_name;
 }

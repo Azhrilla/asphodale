@@ -2,6 +2,7 @@
 #define ENTITY_H
 
 #include <iostream>
+#include <string>
 #include <chrono>
 #include <random>
 #include "coordinates.h"
@@ -9,7 +10,7 @@
 
 class Entity
 {
- private:
+ protected:
   typedef std::mt19937 MyRNG;
   MyRNG m_rng;
   std::uniform_int_distribution<uint32_t> m_dist;
@@ -17,14 +18,19 @@ class Entity
   Coordinates m_coord;
   Coordinates m_coordWanted;
   Cell* m_currentCell;
-
-
+  bool m_isAlive;
+  string m_name;
  public:
   Entity();
-  void SetCoord(unsigned int, unsigned int, Cell*);
+  void SetCoord(Coordinates, Cell*);
   const void PrintCoord();
-  const Coordinates GetTargetDeplacement();
   const Coordinates GetCoord();
+  const string GetName();
+
+  virtual const Coordinates GetTargetDeplacement();
+  virtual const int Attack(Entity*);
+  virtual void TakeDamage(Entity*);
+  virtual const bool IsAlive();
 };
 
 

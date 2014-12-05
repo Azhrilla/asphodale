@@ -9,8 +9,7 @@ int main()
     {
       myGrid.PrintGrid();
       myGrid.ResolveDeplacements();
-      int i;
-      cin >>i;
+      myGrid.ResolveAttacks();
     }
   return 0;
 }
