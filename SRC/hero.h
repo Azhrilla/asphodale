@@ -10,6 +10,7 @@ class Hero : public Entity
  protected:
   int m_HP;
   int m_id;
+  int m_team;
   map<string, int> m_mana;
 
  public:
@@ -18,7 +19,7 @@ class Hero : public Entity
   Coordinates GetTargetDeplacement();
   virtual void TakeDamage(Entity*);
   bool IsAlive() const;
-  virtual void Initialize(int, Cell*, string);
+  virtual void Initialize(int, Cell*, string, int);
   virtual bool CanAttack(Entity*) const;
   virtual void RegenMana();
   virtual void PrintStatus();

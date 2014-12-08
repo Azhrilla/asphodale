@@ -80,7 +80,8 @@ Coordinates Hero::GetTargetDeplacement()
 void Hero::TakeDamage(Entity* foe)
 {
    m_HP -= foe->Attack(this);
-   cout << m_name <<" took " << foe->Attack(this) << " damages from " << foe->GetName()<< endl;
+   cout << m_name <<" took " << foe->Attack(this) << " damages from "
+        << foe->GetName()<< endl;
 }
 
 bool Hero::IsAlive() const
@@ -88,12 +89,13 @@ bool Hero::IsAlive() const
    return (m_HP > 0);
 }
 
-void Hero::Initialize(int id, Cell* cell, string pseudo)
+void Hero::Initialize(int id, Cell* cell, string pseudo, int team)
 {
    m_currentCell = cell;
    m_coord = cell->GetCoord();
    m_id = id;
    m_name = pseudo;
+   m_team = team;
 }
 
 bool Hero::CanAttack(Entity* target) const

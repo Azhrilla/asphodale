@@ -10,13 +10,34 @@ Grid::Grid()
 }
 
 // Créé la grid et initialise les joueurs.
-void Grid::Initialize(int X, int Y, int id_J1, int id_J2)
+void Grid::Initialize(vector<Player> team1, vector<Player> team2)
 {
-  m_dimX = X;
-  m_dimY = Y;
-  m_idJ1 = id_J1;
-  m_idJ2 = id_J2;
+  if (team1.size() != team2.size())
+    {
+      cout << "equipes de taille différentes !!" <<endl;
+      // faudrait throw une erreur en théorie
+    }
+  if (team1.size() == 1)
+    {
+      m_dimX = 5;
+      m_dimY = 5;
 
+      CreateCells();
+      Hero* player1 = new Hero;
+      Hero* player2 = new Hero;
+      player1->Initialize(team1[0].GetId(), &m_cells[0][2],
+                          team1[0].GetPseudo(),1);
+      player2->Initialize(team2[0].GetId(), &m_cells[4][2],
+                          team2[0].GetPseudo(),2);
+
+      m_entities.push_back(player1);
+      m_entities.push_back(player2);
+    }
+
+}
+
+void Grid::CreateCells()
+{
   m_cells = new Cell* [m_dimX];
   for (unsigned int i = 0; i < m_dimX; i++)
     {
@@ -29,23 +50,6 @@ void Grid::Initialize(int X, int Y, int id_J1, int id_J2)
           m_cells[i][j].SetCoord(i,j);
         }
     }
-
-  Hero* player1 = new Hero;
-  player1->Initialize(id_J1, &m_cells[0][2], "Azh");
-  player1->PrintCoord();
-
-  Monster* player2 = new Monster;
-  player2->SetCoord(&m_cells[4][2]);
-  player2->PrintCoord();
-
-  Monster* player3 = new Monster;
-  player3->SetCoord(&m_cells[2][0]);
-  player3->PrintCoord();
-
-
-  m_entities.push_back(player1);
-  m_entities.push_back(player2);
-  m_entities.push_back(player3);
 }
 
 // Fonction récupérant les déplacements et les effectuant si possible.

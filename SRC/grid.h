@@ -2,7 +2,7 @@
 #define GRID_H
 
 
-
+#include "player.h"
 #include "cell.h"
 #include <vector>
 #include "entity.h"
@@ -22,16 +22,16 @@ class Grid
   std::vector<Entity*> m_entities;
   unsigned int m_dimX;
   unsigned int m_dimY;
-  unsigned int m_idJ1;
-  unsigned int m_idJ2;
+  vector<Player> m_players;
 
 
 
  public:
   Grid();
-  void Initialize(int, int, int, int);
+  void Initialize(vector<Player>, vector<Player>);
   void ResolveDeplacements();
   void ResolveAttacks();
+  void CreateCells();
   void PrintGrid() const;
   bool IsCellFull(Coordinates, int&) const;
   bool DeplacementImpossible(Coordinates) const;
