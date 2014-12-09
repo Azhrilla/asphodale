@@ -29,7 +29,7 @@ void Monster::TakeDamage(Entity* foe)
   cout << m_name << " took " << foe->Attack(this)<< " damages from " << foe->GetName()<< endl;
 }
 
-int Monster::Attack(Entity* target) const
+int Monster::Attack(Entity*) const
 {
   return m_attackDamage;
 }

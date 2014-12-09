@@ -11,7 +11,7 @@
 #include <iostream>
 #include "monster.h"
 #include "hero.h"
-
+#include "command.h"
 
 class Grid
 {
@@ -22,8 +22,8 @@ class Grid
   std::vector<Entity*> m_entities;
   unsigned int m_dimX;
   unsigned int m_dimY;
-  vector<Player> m_players;
-
+  vector<Entity*> m_playerEntities;
+  unsigned int m_turn;
 
 
  public:
@@ -39,6 +39,9 @@ class Grid
   void CheckAlive();
   void RegenMana();
   void PrintStatus() const;
+  void EndTurn();
+  Command GetAvailableCommand(int) const;
+  void GiveCommand(Command);
 };
 
 

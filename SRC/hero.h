@@ -23,6 +23,8 @@ class Hero : public Entity
   virtual bool CanAttack(Entity*) const;
   virtual void RegenMana();
   virtual void PrintStatus();
+  virtual int GetId() const;
+  virtual void SetCommand(Command);
 };
 
 #endif

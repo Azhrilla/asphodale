@@ -8,7 +8,7 @@
 #include <map>
 #include "coordinates.h"
 #include "cell.h"
-
+#include "command.h"
 
 // Tout est entité sur la grille, spécialisations possibles : héros, monstres,
 // murs ... etc
@@ -24,6 +24,7 @@ class Entity
   Cell* m_currentCell;
   string m_name;
 
+
  public:
   Entity();
   virtual ~Entity()=0;
@@ -38,6 +39,9 @@ class Entity
   virtual bool CanAttack(Entity*) const;
   virtual void RegenMana();
   virtual void PrintStatus();
+  virtual void EndTurn();
+  virtual int GetId() const;
+  virtual void SetCommand(Command);
 };
 
 

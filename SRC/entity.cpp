@@ -43,7 +43,7 @@ Coordinates Entity::GetTargetDeplacement()
   return output;
 }
 
-int Entity::Attack(Entity* target) const
+int Entity::Attack(Entity*) const
 {
   return 0;
 }
@@ -63,7 +63,7 @@ string Entity::GetName() const
   return m_name;
 }
 
-bool Entity::CanAttack(Entity* target) const
+bool Entity::CanAttack(Entity*) const
 {
   return true;
 }
@@ -75,4 +75,18 @@ void Entity::RegenMana()
 void Entity::PrintStatus()
 {
   cout << "i am "<< m_name << endl;
+}
+
+
+void Entity::EndTurn()
+{
+}
+
+int Entity::GetId() const
+{
+  return 0;
+}
+
+void Entity::SetCommand(Command)
+{
 }

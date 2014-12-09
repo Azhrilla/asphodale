@@ -12,6 +12,8 @@ Grid::Grid()
 // Créé la grid et initialise les joueurs.
 void Grid::Initialize(vector<Player> team1, vector<Player> team2)
 {
+  m_turn = 1;
+
   if (team1.size() != team2.size())
     {
       cout << "equipes de taille différentes !!" <<endl;
@@ -29,11 +31,11 @@ void Grid::Initialize(vector<Player> team1, vector<Player> team2)
                           team1[0].GetPseudo(),1);
       player2->Initialize(team2[0].GetId(), &m_cells[4][2],
                           team2[0].GetPseudo(),2);
-
+      m_playerEntities.push_back(player1);
+      m_playerEntities.push_back(player2);
       m_entities.push_back(player1);
       m_entities.push_back(player2);
     }
-
 }
 
 void Grid::CreateCells()
@@ -251,8 +253,90 @@ void Grid::RegenMana()
 
 void Grid::PrintStatus() const
 {
+  cout << "Turn #" << m_turn << endl;
   for (unsigned int i = 0; i < m_entities.size(); i++)
     {
       m_entities[i]->PrintStatus();
+    }
+}
+
+void Grid::EndTurn()
+{
+  m_turn++;
+  for(unsigned int i = 0; i <  m_entities.size(); i++)
+    {
+      m_entities[i]->EndTurn();
+    }
+}
+
+Command Grid::GetAvailableCommand(int id) const
+{
+  Coordinates currentCoord;
+  Command output;
+  output.m_id = id;
+
+  for(unsigned int i = 0; i < m_playerEntities.size(); i++)
+    {
+      if (m_playerEntities[i]->GetId() == id)
+        {
+          currentCoord = m_playerEntities[i]->GetCoord();
+          break;
+        }
+    }
+
+  output.m_coord.push_back(currentCoord);
+  currentCoord.m_posX++;
+  if (!DeplacementImpossible(currentCoord))
+    {
+      output.m_coord.push_back(currentCoord);
+    }
+  currentCoord.m_posY++;
+  if (!DeplacementImpossible(currentCoord))
+    {
+      output.m_coord.push_back(currentCoord);
+    }
+  currentCoord.m_posX--;
+  if (!DeplacementImpossible(currentCoord))
+    {
+      output.m_coord.push_back(currentCoord);
+    }
+  currentCoord.m_posX--;
+  if (!DeplacementImpossible(currentCoord))
+    {
+      output.m_coord.push_back(currentCoord);
+    }
+  currentCoord.m_posY--;
+  if (!DeplacementImpossible(currentCoord))
+    {
+      output.m_coord.push_back(currentCoord);
+    }
+  currentCoord.m_posY--;
+  if (!DeplacementImpossible(currentCoord))
+    {
+      output.m_coord.push_back(currentCoord);
+    }
+  currentCoord.m_posX++;
+  if (!DeplacementImpossible(currentCoord))
+    {
+      output.m_coord.push_back(currentCoord);
+    }
+  currentCoord.m_posX++;
+  if (!DeplacementImpossible(currentCoord))
+    {
+      output.m_coord.push_back(currentCoord);
+    }
+
+  return output;
+}
+
+void Grid::GiveCommand(Command order)
+{
+  for(unsigned int i = 0; i < m_playerEntities.size(); i++)
+    {
+      if (m_playerEntities[i]->GetId() == order.m_id)
+        {
+          m_playerEntities[i]->SetCommand(order);
+          break;
+        }
     }
 }
