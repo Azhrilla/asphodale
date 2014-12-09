@@ -3,56 +3,56 @@
 #include "player.h"
 #include <vector>
 #include "coordinates.h"
+
+//Command batarde pour faire mumuz en mode texte
+Command GetCommand(Command input)
+{
+  Command output;
+  int i;
+  cout << endl << "id=" << input.m_id <<endl;
+      for (unsigned int i = 0 ; i < input.m_coord.size(); i++)
+        {
+          cout<<i<<"=> " << input.m_coord[i].m_posX << " "  <<input.m_coord[i].m_posY <<endl ;
+        }
+      cin >> i;
+      output.m_id=input.m_id;
+      output.m_coord.push_back(input.m_coord[i]);
+      cout << "destination choisie : " << output.m_coord[0].m_posX << " " << output.m_coord[0].m_posY << endl;
+
+      return output;
+}
+
 int main()
 {
   Grid myGrid;
-  int i;
-
   Player P1(1,"barbare");
   Player P2(2,"batman");
   vector<Player> team1;
-  team1.push_back(P1);
   vector<Player> team2;
+
+  team1.push_back(P1);
   team2.push_back(P2);
 
-  Command j1;
-  Command j2;
-  j1.m_id=1;
-  j2.m_id=2;
+  int idJ1=1;
+  int idJ2=2;
 
-  Coordinates temp;
+
   myGrid.Initialize(team1,team2);
   while (true)//while !myGrid.GameOver()
     {
       myGrid.PrintStatus();
       myGrid.PrintGrid();
-      j1=myGrid.GetAvailableCommand(j1.m_id);
-      j2=myGrid.GetAvailableCommand(j2.m_id);
 
-      cout << endl << "id=" << j1.m_id <<endl;
-      for (unsigned int i = 0 ; i < j1.m_coord.size(); i++)
-        {
-          cout<<i<<"=> " << j1.m_coord[i].m_posX << " "  <<j1.m_coord[i].m_posY <<endl ;
-        }
-      cin >> i;
-      temp = j1.m_coord[i];
-      j1.m_coord.clear();
-      j1.m_coord.push_back(temp);
-      cout << "destination choisie : " << j1.m_coord[0].m_posX << " " << j1.m_coord[0].m_posY << endl;
-      myGrid.GiveCommand(j1);
+      Command j1=myGrid.GetAvailableCommand(idJ1);
+      Command J1b=GetCommand(j1);
+      myGrid.GiveCommand(J1b);
 
-      cout << endl << "id=" << j2.m_id <<endl;
-      for (unsigned int i = 0 ; i < j2.m_coord.size(); i++)
-        {
-          cout <<i <<"=> "<<j2.m_coord[i].m_posX << " "  <<j2.m_coord[i].m_posY<<endl ;
-        }
+      Command j2=myGrid.GetAvailableCommand(idJ2);
+      Command J2b=GetCommand(j2);
+      myGrid.GiveCommand(J2b);
 
-      cin >> i;
-      temp = j2.m_coord[i];
-      j2.m_coord.clear();
-      j2.m_coord.push_back(temp);
-      cout << "destination choisie : " << j2.m_coord[0].m_posX << " "<<  j2.m_coord[0].m_posY <<endl;
-      myGrid.GiveCommand(j2);
+
+
       myGrid.RegenMana();
       myGrid.ResolveDeplacements();
       myGrid.ResolveAttacks();
